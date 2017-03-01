@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <KPiotrowicz_OffEmptyConfProduct>
+      <version>1.0</version>
+    </KPiotrowicz_OffEmptyConfProduct>
+  </modules>
+  <global>
+    <helpers>
+      <offemptyconfproduct>
+        <class>KPiotrowicz_OffEmptyConfProduct_Helper</class>
+      </offemptyconfproduct>
+    </helpers>
+	<models>
+	  <offemptyconfproduct>
+		<class>KPiotrowicz_OffEmptyConfProduct_Model</class>
+		<resourceModel>offemptyconfproduct_mysql4</resourceModel>
+	  </offemptyconfproduct>
+	</models>
+  </global>    
+    <crontab>
+        <jobs>            
+			<offemptyconfproduct_offconfigurable>
+                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
+                <run><model>offemptyconfproduct/cron::offconfigurable</model></run>
+            </offemptyconfproduct_offconfigurable>
+        </jobs>
+    </crontab>
+</config> 
