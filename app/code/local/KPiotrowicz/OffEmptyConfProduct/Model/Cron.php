@@ -9,7 +9,7 @@
  *  Plugin description: Turning off the empty configurable products
  */
 
-class KPiotrowicz_OffEmptyConfProduct_Model_Cron
+class KPiotrowicz_OffEmptyConfProduct_Model_Cron extends KPiotrowicz_OffEmptyConfProduct_Helper_Data
 {
     public function offconfigurable()
     {
