@@ -5,6 +5,17 @@
       <version>1.0</version>
     </KPiotrowicz_OffEmptyConfProduct>
   </modules>
+  <frontend>
+    <routers>
+      <offemptyconfproduct>
+        <use>standard</use>
+          <args>
+            <module>KPiotrowicz_OffEmptyConfProduct</module>
+            <frontName>offemptyconfproduct</frontName>
+          </args>
+      </offemptyconfproduct>
+    </routers>
+  </frontend>
   <global>
     <helpers>
       <offemptyconfproduct>

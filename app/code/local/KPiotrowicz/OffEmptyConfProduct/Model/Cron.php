@@ -1,7 +1,7 @@
 <?php
 /*
  *  Author: Kamil Piotrowicz
- *  Date: 01.03.2017
+ *  Date: 02.03.2017
  *  Website: www.kamilpiotrowicz.pl
  *  Location: Warsaw, Poland
  *  
@@ -11,8 +11,16 @@
 
 class KPiotrowicz_OffEmptyConfProduct_Model_Cron extends KPiotrowicz_OffEmptyConfProduct_Helper_Data
 {
+    public function __construct()
+    {
+        $this->offconfigurable();
+    }
+    
     public function offconfigurable()
     {
-        //do something
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        //$this->getTable("catalog_product_entity");
+        //$results = $readConnection->fetchAll($query);
     }
 }
