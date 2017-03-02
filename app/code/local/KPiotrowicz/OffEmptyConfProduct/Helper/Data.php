@@ -11,5 +11,9 @@
 
 class KPiotrowicz_OffEmptyConfProduct_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    //this is empty :(
+    private function getTable($table)
+    {
+        $resource = Mage::getSingleton('core/resource');
+        return $resource->getTableName($table);
+    }
 }
