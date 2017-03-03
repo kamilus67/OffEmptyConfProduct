@@ -37,6 +37,11 @@ class KPiotrowicz_OffEmptyConfProduct_Model_Cron extends KPiotrowicz_OffEmptyCon
                 $results[$j]->execute();
                 $updateRow = $results[$j]->rowCount();
                 
+                if($updateRow == 1)
+                {
+                    $this->addLog($row['product_conf'], TRUE);
+                }
+                
                 $j++;
             }
         }
