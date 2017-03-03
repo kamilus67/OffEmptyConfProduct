@@ -21,10 +21,28 @@ class KPiotrowicz_OffEmptyConfProduct_Model_Cron extends KPiotrowicz_OffEmptyCon
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
 
-        $this->getGroupProductId();
+        $qtyProducts = $this->getQty();
+        $j = 0;
+        foreach($qtyProducts as $row)
+        {
+            if($row['qty'] == 0)
+            {
+                $query = "UPDATE ".$this->getTable('catalog_product_entity_int')." 
+                          SET value=2
+                          WHERE attribute_id=96 AND
+                          entity_type_id=4 AND
+                          value=1 AND
+                          entity_id=".$row['product_conf'];
+                $results[$j] = $readConnection->prepare($query);
+                $results[$j]->execute();
+                $updateRow = $results[$j]->rowCount();
+                
+                $j++;
+            }
+        }
     }
     
-    private function getGroupProductId()
+    private function getQty()
     {
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
@@ -55,10 +73,11 @@ class KPiotrowicz_OffEmptyConfProduct_Model_Cron extends KPiotrowicz_OffEmptyCon
                       b.attribute_id = $resultsAttId AND
                       b.value = 1 AND
                       a.product_id IN (".$row['simple_products'].")";
-            $resultsQty[$j] = $readConnection->fetchAll($query);
+            $resultsQty[$j] = $readConnection->fetchAll($query)[0];
+            $resultsQty[$j]['product_conf'] = $row['conf_products'];
             $j++;
         }
         
-        print_r($resultsQty);
+        return $resultsQty;
     }
 }
