@@ -1,7 +1,7 @@
 <?php
 /*
  *  Author: Kamil Piotrowicz
- *  Date: 02.03.2017
+ *  Date: 03.03.2017
  *  Website: www.kamilpiotrowicz.pl
  *  Location: Warsaw, Poland
  *  
@@ -11,7 +11,7 @@
 
 class KPiotrowicz_OffEmptyConfProduct_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    private function getTable($table)
+    public function getTable($table)
     {
         $resource = Mage::getSingleton('core/resource');
         return $resource->getTableName($table);
