@@ -20,16 +20,21 @@ class KPiotrowicz_OffEmptyConfProduct_Model_Cron extends KPiotrowicz_OffEmptyCon
     {
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
-
+        
         $qtyProducts = $this->getQty();
+        $query = "(SELECT attribute_id FROM
+                   ".$this->getTable('eav_attribute')."
+                   WHERE attribute_code LIKE 'status')";
+        $resultsAttId = $readConnection->fetchAll($query)[0]['attribute_id'];
         $j = 0;
+        $k = 0;
         foreach($qtyProducts as $row)
         {
             if($row['qty'] == 0)
             {
                 $query = "UPDATE ".$this->getTable('catalog_product_entity_int')." 
                           SET value=2
-                          WHERE attribute_id=96 AND
+                          WHERE attribute_id=$resultsAttId AND
                           entity_type_id=4 AND
                           value=1 AND
                           entity_id=".$row['product_conf'];
@@ -39,10 +44,29 @@ class KPiotrowicz_OffEmptyConfProduct_Model_Cron extends KPiotrowicz_OffEmptyCon
                 
                 if($updateRow == 1)
                 {
-                    $this->addLog($row['product_conf'], TRUE);
+                    $this->addLog($row['product_conf'], 'disabled');
                 }
                 
                 $j++;
+            }
+            elseif($row['qty'] > 0)
+            {
+                $query = "UPDATE ".$this->getTable('catalog_product_entity_int')." 
+                          SET value=1
+                          WHERE attribute_id=$resultsAttId AND
+                          entity_type_id=4 AND
+                          value=2 AND
+                          entity_id=".$row['product_conf'];
+                $results[$k] = $readConnection->prepare($query);
+                $results[$k]->execute();
+                $updateRow = $results[$k]->rowCount();
+                
+                if($updateRow == 1)
+                {
+                    $this->addLog($row['product_conf'], 'enabled');
+                }
+                
+                $k++;
             }
         }
     }
